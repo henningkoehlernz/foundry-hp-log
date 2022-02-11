@@ -12,7 +12,7 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
         // wisper to self and GM
         ChatMessage.create({
             user: user_id,
-            speaker: ChatMessage.getSpeaker(undefined, actor),
+            speaker: ChatMessage.getSpeaker({actor:actor}),
             content: `<table><th style="text-align:center">${msg}</th></table>`,
             type: CONST.CHAT_MESSAGE_TYPES.WHISPER,
             whisper: game.users.filter(u => u.isGM || u.isSelf)
