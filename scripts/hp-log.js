@@ -14,6 +14,7 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
             user: user_id,
             speaker: ChatMessage.getSpeaker({actor:actor}),
             content: `<table><th style="text-align:center">${msg}</th></table>`,
+            lang: "common", // for use with Polyglot module
             type: CONST.CHAT_MESSAGE_TYPES.WHISPER,
             whisper: game.users.filter(u => u.isGM || u.isSelf)
         });
