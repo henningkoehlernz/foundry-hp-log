@@ -3,7 +3,7 @@
     "title": "Hitpoint Log",
     "description": "Log hitpoint changes as chat messages.",
     "author": "Henning Koehler",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "minimumCoreVersion": "0.8.5",
     "compatibleCoreVersion": "9",
     "scripts": [

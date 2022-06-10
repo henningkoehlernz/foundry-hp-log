@@ -1,9 +1,18 @@
 Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
     let newHP = data.data.attributes.hp.value;
+    let newTemp = data.data.attributes.hp.temp;
     // only create message when hp are updated
-    if (newHP) {
+    if (newHP !== undefined || newTemp !== undefined) {
         let oldHP = actor.data.data.attributes.hp.value;
-        let msg = `hp: ${oldHP} -> ${newHP}`;
+        let oldTemp = actor.data.data.attributes.hp.temp;
+        // makes sure new values are defined
+        if (newHP === undefined)
+            newHP = oldHP;
+        if (newTemp === undefined)
+            newTemp = oldTemp;
+        // create message
+        var hpFormat = function(hp, temp) { return temp ? `${hp}+${temp}` : hp; };
+        let msg = `hp: ${hpFormat(oldHP, oldTemp)} -> ${hpFormat(newHP, newTemp)}`;
         // show skulls if dead
         if (newHP <= -actor.data.data.abilities.con.total) {
             let img = '<img src="icons/svg/skull.svg" width="20" height="20" style="vertical-align: middle;border-style: none;margin-left: 20px;margin-right:20px">';
