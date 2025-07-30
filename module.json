@@ -3,9 +3,9 @@
     "title": "Hitpoint Log",
     "description": "Log hitpoint changes as chat messages.",
     "author": "Henning Koehler",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "minimumCoreVersion": "0.8.5",
-    "compatibleCoreVersion": "9",
+    "compatibleCoreVersion": "13",
     "scripts": [
         "scripts/hp-log.js"
     ]
