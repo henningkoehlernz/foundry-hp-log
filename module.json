@@ -1,11 +1,15 @@
 {
-    "name": "hp-log",
+    "id": "hp-log",
     "title": "Hitpoint Log",
     "description": "Log hitpoint changes as chat messages.",
-    "author": "Henning Koehler",
+    "authors": [
+        { "name": "Henning Koehler" }
+    ],
     "version": "0.2.1",
-    "minimumCoreVersion": "0.8.5",
-    "compatibleCoreVersion": "13",
+    "compatibility": {
+        "minimum": "10",
+        "verified": "13"
+    },
     "scripts": [
         "scripts/hp-log.js"
     ]
