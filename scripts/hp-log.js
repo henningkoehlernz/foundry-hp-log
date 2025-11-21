@@ -40,10 +40,10 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
         let msg = `hp: ${hpFormat(oldHP, oldTemp, oldNL)} -> ${hpFormat(any(newHP, oldHP), any(newTemp, oldTemp), any(newNL, oldNL))}`;
         if (oldSP !== undefined) { // Starfinder only
             msg += `<br>sp: ${oldSP} -> ${any(newSP, oldSP)}`;
-            // Starfinder trigger updates containing HP/SP fields on sheet closure
-            if (oldSP == newSP && oldHP == newHP && oldTemp == newTemp)
-                return;
         }
+        // Starfinder trigger updates containing HP/SP fields on sheet closure
+        if (oldSP == newSP && oldHP == newHP && oldTemp == newTemp)
+            return;
         // show skulls if dead
         if (newHP <= -actor.system.abilities.con.total)
             msg += '<img src="icons/svg/skull.svg" width="50" height="50">';
