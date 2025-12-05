@@ -53,7 +53,7 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
             speaker: ChatMessage.getSpeaker({actor:actor}),
             content: msg,
             lang: "common", // for use with Polyglot module
-            whisper: game.users.filter(u => u.isGM || u.isSelf)
+            whisper: game.users.filter(u => u.isGM || u.isSelf || actor.testUserPermission(u, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER))
         });
     }
 });
