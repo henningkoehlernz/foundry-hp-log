@@ -41,12 +41,23 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
         if (oldSP !== undefined) { // Starfinder only
             msg += `<br>sp: ${oldSP} -> ${any(newSP, oldSP)}`;
         }
-        // Starfinder trigger updates containing HP/SP fields on sheet closure
-        if (oldSP == newSP && oldHP == newHP && oldTemp == newTemp)
-            return;
-        // show skulls if dead
-        if (newHP <= -actor.system.abilities.con.total)
-            msg += '<img src="icons/svg/skull.svg" width="50" height="50">';
+        // Starships record HP the same as characters, shields are stored in quadrants
+        if (safely(data, 'system.quadrants') !== undefined) {
+            const quadrants = ['forward', 'port', 'starboard', 'aft'];
+            let newShields = quadrants.map((q) => safely(data, `system.quadrants.${q}.shields.value`));
+            let oldShields = quadrants.map((q) => safely(actor, `system.quadrants.${q}.shields.value`));
+            msg += `<br>sp: ${oldShields} -> ${newShields}`;
+            // Starfinder trigger updates containing HP fields on sheet closure
+            if (oldHP == newHP && oldShields.toString() == newShields.toString())
+                return;
+        } else {
+            // Starfinder trigger updates containing HP fields on sheet closure
+            if (oldSP == newSP && oldHP == newHP && oldTemp == newTemp)
+                return;
+            // show skulls if dead (Pathfinder 1e)
+            if (newHP <= safely(actor, "system.abilities.con.total"))
+                msg += '<img src="icons/svg/skull.svg" width="50" height="50">';
+        }
         // wisper to self and GM
         ChatMessage.create({
             user: user_id,
