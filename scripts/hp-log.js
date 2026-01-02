@@ -23,12 +23,16 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
     // HP & SP are recorded as absolute values in Starfinder
     let newHP = safely(data, 'system.attributes.hp.value');
     let newSP = safely(data, 'system.attributes.sp.value');
+    // starships may update shields only (divert buttons)
+    const quadrants = ['forward', 'port', 'starboard', 'aft'];
+    let newShields = quadrants.map((q) => safely(data, `system.quadrants.${q}.shields.value`));
     // only create message when hp are updated
-    if (any(offsetHP, newTemp, newNL, newHP, newSP) !== undefined) {
+    if (any(offsetHP, newTemp, newNL, newHP, newSP) !== undefined || any(newShields) !== undefined) {
         let oldHP = safely(actor, 'system.attributes.hp.value');
         let oldSP = safely(actor, 'system.attributes.sp.value');
         let oldTemp = safely(actor, 'system.attributes.hp.temp');
         let oldNL = safely(actor, 'system.attributes.hp.nonlethal');
+        let oldShields = quadrants.map((q) => safely(actor, `system.quadrants.${q}.shields.value`));
         // compute new HP based on max (Pathfinder)
         if (offsetHP !== undefined)
             newHP = safely(actor, 'system.attributes.hp.max') + offsetHP;
@@ -43,10 +47,7 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
         }
         // Starships record HP the same as characters, shields are stored in quadrants
         if (safely(data, 'system.quadrants') !== undefined) {
-            const quadrants = ['forward', 'port', 'starboard', 'aft'];
-            let newShields = quadrants.map((q) => safely(data, `system.quadrants.${q}.shields.value`));
-            let oldShields = quadrants.map((q) => safely(actor, `system.quadrants.${q}.shields.value`));
-            msg += `<br>sp: ${oldShields} -> ${newShields}`;
+            msg += `<br>sp: ${oldShields} -> ${newShields.map((v,i) => any(v, oldShields[i]))}`;
             // Starfinder trigger updates containing HP fields on sheet closure
             if (oldHP == newHP && oldShields.toString() == newShields.toString())
                 return;
