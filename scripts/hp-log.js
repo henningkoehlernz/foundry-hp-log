@@ -30,7 +30,7 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
     const quadrants = ['forward', 'port', 'starboard', 'aft'];
     let newShields = quadrants.map((q) => safely(data, `system.quadrants.${q}.shields.value`));
     // only create message when hp are updated
-    if (any(offsetHP, newTemp, newNL, newHP, newSP) !== undefined || any(newShields) !== undefined) {
+    if (any(offsetHP, newTemp, newNL, newHP, newSP) !== undefined || any(...newShields) !== undefined) {
         let oldHP = safely(actor, 'system.attributes.hp.value');
         let oldSP = safely(actor, 'system.attributes.sp.value');
         let oldTemp = safely(actor, 'system.attributes.hp.temp');
