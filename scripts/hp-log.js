@@ -16,6 +16,9 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
                 return args[i];
         return undefined;
     };
+    let unchanged = function(old_val, new_val) {
+        return new_val == undefined || new_val == old_val;
+    };
     // HP are recorded as difference from max in Pathfinder
     let offsetHP = safely(data, 'system.attributes.hp.offset');
     let newTemp = safely(data, 'system.attributes.hp.temp');
@@ -49,11 +52,11 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
         if (safely(data, 'system.quadrants') !== undefined) {
             msg += `<br>sp: ${oldShields} -> ${newShields.map((v,i) => any(v, oldShields[i]))}`;
             // Starfinder trigger updates containing HP fields on sheet closure
-            if (oldHP == newHP && oldShields.toString() == newShields.toString())
+            if (unchanged(oldHP, newHP) && oldShields.toString() == newShields.toString())
                 return;
         } else {
             // Starfinder trigger updates containing HP fields on sheet closure
-            if (oldSP == newSP && oldHP == newHP && oldTemp == newTemp)
+            if (unchanged(oldSP, newSP) && unchanged(oldHP, newHP) && unchanged(oldTemp, newTemp))
                 return;
             // show skulls if dead (Pathfinder 1e)
             if (newHP <= safely(actor, "system.abilities.con.total"))
