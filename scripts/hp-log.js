@@ -59,7 +59,7 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
             if (unchanged(oldSP, newSP) && unchanged(oldHP, newHP) && unchanged(oldTemp, newTemp))
                 return;
             // show skulls if dead (Pathfinder 1e)
-            if (newHP <= safely(actor, "system.abilities.con.total"))
+            if (newHP <= -safely(actor, "system.abilities.con.total"))
                 msg += '<img src="icons/svg/skull.svg" width="50" height="50">';
         }
         // wisper to self and GM
