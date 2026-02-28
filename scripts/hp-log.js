@@ -70,5 +70,11 @@ Hooks.on('preUpdateActor', (actor, data, options, user_id) => {
             lang: "common", // for use with Polyglot module
             whisper: game.users.filter(u => u.isGM || u.isSelf || actor.testUserPermission(u, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER))
         });
+        // store latest hitpoint changes using flags
+        if (oldHP > newHP) {
+            actor.setFlag('hp-log', 'lastDamage', oldHP - newHP);
+        } else if (newHP > oldHP) {
+            actor.setFlag('hp-log', 'lastHealing', newHP - oldHP);
+        }
     }
 });
